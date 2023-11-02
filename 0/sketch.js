@@ -1,26 +1,30 @@
+let oImage;
 let mImage;
-let buttonClick;
+//let buttonClick;
 
 function preload() {
-  mImage = loadImage("./PietImage.jpg");
+  oImage = loadImage("./PietImage.jpg");
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   pixelDensity(1);
-  print("Original size: ", mImage.width, " x ", mImage.height);
+  print("Original size: ", oImage.width, " x ", oImage.height); //original image size
   
-  if (mImage.width > width) {
-    mImage.resize(width, 0);
+  if (oImage.width > width) { //resize image width to window width
+    oImage.resize(width, 0);
   }
-  if (mImage.height > height) {
-    mImage.resize(0, height);
+  if (oImage.height > height) { //resize image height to window height
+    oImage.resize(0, height);
   }
 
-  print("Scaled size: ", mImage.width, " x ", mImage.height);
+  print("Scaled size: ", oImage.width, " x ", oImage.height);
 
-buttonClick = createButton("Change Color");
-buttonClick.mousePressed(changeBlue);
+oImage.loadPixels
+mImage = oImage.get();
+
+//buttonClick = createButton("Change Color");
+//buttonClick.mousePressed(changeBlue);
 
 }
 
@@ -31,25 +35,29 @@ function draw() {
   mImage.loadPixels();
 
   for (let i = 0; i < mImage.pixels.length; i += 4) {
-    mImage.pixels[i + 0] = rValue;
-    mImage.pixels[i + 1] = bValue;
-    mImage.pixels[i + 2] = gValue;
+    rValue = oImage.pixels[i + 0];
+    bValue = oImage.pixels[i + 1];
+    gValue = oImage.pixels[i + 2];
 
     maxColorValue = max(rValue, bValue, gValue);
 
-    if (maxColorValue == redValue) { //if red, change to blue
-      mImage.pixels[i + 0] = 0;
+    if (maxColorValue == rValue && rValue == gValue * 3 ) { //if red, change to blue
+      mImage.pixels[i + 0] = 19;
+      mImage.pixels[i + 1] = 87;
+      mImage.pixels[i + 2] = 238;
     } else if (maxColorValue == gValue) { //if green, change to yellow
-      mImage.pixels[i + 1] = 255;
+      mImage.pixels[i + 0] = 238;
+      mImage.pixels[i + 1] = 227;
+      mImage.pixels[i + 2] = 19;
     }
   }
 
   mImage.updatePixels();
 
-  buttonClick.position(width / 2, height / 2);
+  // buttonClick.position(width / 2, height / 2);
 }
 
-function changeBlue() {
-  mImage.pixels[i + 1] = random(255);
-}
+//function changeBlue() {
+ // mImage.pixels[i + 1] = random(255);
+//}
 
