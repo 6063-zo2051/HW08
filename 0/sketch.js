@@ -18,9 +18,9 @@ function setup() {
     oImage.resize(0, height);
   }
 
+  oImage.loadPixels();
   print("Scaled size: ", oImage.width, " x ", oImage.height);
 
-oImage.loadPixels
 mImage = oImage.get();
 
 //buttonClick = createButton("Change Color");
@@ -30,7 +30,6 @@ mImage = oImage.get();
 
 function draw() {
   background(255);
-  image(mImage, 0, 0);
 
   mImage.loadPixels();
 
@@ -41,7 +40,7 @@ function draw() {
 
     maxColorValue = max(rValue, bValue, gValue);
 
-    if (maxColorValue == rValue && rValue == gValue * 3 ) { //if red, change to blue
+    if (maxColorValue == rValue && rValue > gValue * 4 ) { //if red, change to blue
       mImage.pixels[i + 0] = 19;
       mImage.pixels[i + 1] = 87;
       mImage.pixels[i + 2] = 238;
@@ -53,6 +52,8 @@ function draw() {
   }
 
   mImage.updatePixels();
+
+  image(mImage, 0, 0);
 
   // buttonClick.position(width / 2, height / 2);
 }
