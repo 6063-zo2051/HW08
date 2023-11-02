@@ -1,41 +1,55 @@
-let img;
+let mImage;
+let buttonClick;
 
 function preload() {
-  img = loadImage('PietImage.jpg');
+  mImage = loadImage("./PietImage.jpg");
 }
 
 function setup() {
-  createCanvas(img.width, img.height);
-  image(img, 0, 0);
+  createCanvas(windowWidth, windowHeight);
+  pixelDensity(1);
+  print("Original size: ", mImage.width, " x ", mImage.height);
+  
+  if (mImage.width > width) {
+    mImage.resize(width, 0);
+  }
+  if (mImage.height > height) {
+    mImage.resize(0, height);
+  }
 
-replaceColors(color(255, 0, 0), color(0, 255, 0));
-replaceColors(color(255, 255, 0), color(0, 0, 255));
-replaceColors(color(0, 0, 255), color(255, 255, 0));
+  print("Scaled size: ", mImage.width, " x ", mImage.height);
 
-image(img, 0, 0);
+buttonClick = createButton("Change Color");
+buttonClick.mousePressed(changeBlue);
+
 }
 
 function draw() {
-}
+  background(255);
+  image(mImage, 0, 0);
 
-function replaceColors (targetColor, replacementColor) {
-  img.loadPixels();
+  mImage.loadPixels();
 
-  for (let i = 0; i < pixels.length; i += 4) {
-    let r = pixels[i];
-    let g = pixels[i + 1];
-    let b = pixels[i + 2];
+  for (let i = 0; i < mImage.pixels.length; i += 4) {
+    mImage.pixels[i + 0] = rValue;
+    mImage.pixels[i + 1] = bValue;
+    mImage.pixels[i + 2] = gValue;
 
-    if (colorMatches(targetColor, color(r, g, b))) {
-      img.pixels[i] = red(replacementColor);
-      img.pixels[i+1] = green(replacementColor);
-      img.pixels[i+2] = blue(replacementColor);
+    maxColorValue = max(rValue, bValue, gValue);
+
+    if (maxColorValue == redValue) { //if red, change to blue
+      mImage.pixels[i + 0] = 0;
+    } else if (maxColorValue == gValue) { //if green, change to yellow
+      mImage.pixels[i + 1] = 255;
     }
   }
 
-  img.updatePixels();
+  mImage.updatePixels();
+
+  buttonClick.position(width / 2, height / 2);
 }
 
-function colorMatches (color1, color2) {
-return red(color1) === red(color2) && green(color1) === green(color2) && blue(color1) === blue(color2);
+function changeBlue() {
+  mImage.pixels[i + 1] = random(255);
 }
+
